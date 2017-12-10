@@ -52,6 +52,7 @@ public class CameraActivity extends AppCompatActivity {
     private Button getpictureBtn;
     private HandlerThread mBackgroundThread;
     private Handler mBackgroundHandler;
+    private File file;
 
 
     private final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
@@ -85,68 +86,96 @@ public class CameraActivity extends AppCompatActivity {
         try {
             CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraDevice.getId());
             Size[] jpegSizes = null;
-            if (characteristics != null) {
+
+            if (characteristics != null)
+            {
                 jpegSizes = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP).getOutputSizes(ImageFormat.JPEG);
             }
+
             int width = 640;
             int height = 480;
-            if (jpegSizes != null && 0 < jpegSizes.length) {
+            if (jpegSizes != null && 0 < jpegSizes.length)
+            {
                 width = jpegSizes[0].getWidth();
                 height = jpegSizes[0].getHeight();
             }
+
             ImageReader reader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 1);
             List<Surface> outputSurfaces = new ArrayList<Surface>(2);
             outputSurfaces.add(reader.getSurface());
             outputSurfaces.add(new Surface(textureView.getSurfaceTexture()));
+
             final CaptureRequest.Builder captureBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             captureBuilder.addTarget(reader.getSurface());
             captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
             // Orientation
-            int rotation = getWindowManager().getDefaultDisplay().getRotation();
+           // int rotation = getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, Surface.ROTATION_0);
             final File file = new File(Environment.getExternalStorageDirectory()+"/pic.jpg");
-            ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
+
+            ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener()
+            {
                 @Override
-                public void onImageAvailable(ImageReader reader) {
+                public void onImageAvailable(ImageReader reader)
+                {
                     Image image = null;
-                    try {
+                    try
+                    {
                         image = reader.acquireLatestImage();
                         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
                         byte[] bytes = new byte[buffer.capacity()];
                         buffer.get(bytes);
                         save(bytes);
-                    } catch (FileNotFoundException e) {
+                    }
+                    catch (FileNotFoundException e)
+                    {
                         e.printStackTrace();
-                    } catch (IOException e) {
+                    }
+                    catch (IOException e)
+                    {
                         e.printStackTrace();
-                    } finally {
-                        if (image != null) {
+                    }
+                    finally
+                    {
+                        if (image != null)
+                        {
                             image.close();
                         }
                     }
                 }
-                private void save(byte[] bytes) throws IOException {
+
+                private void save(byte[] bytes) throws IOException
+                {
                     OutputStream output = null;
-                    try {
+                    try
+                    {
                         output = new FileOutputStream(file);
                         output.write(bytes);
-                    } finally {
-                        if (null != output) {
+                    }
+                    finally
+                    {
+                        if (null != output)
+                        {
                             output.close();
                         }
                     }
                 }
             };
             reader.setOnImageAvailableListener(readerListener, mBackgroundHandler);
-            final CameraCaptureSession.CaptureCallback captureListener = new CameraCaptureSession.CaptureCallback() {
+
+            final CameraCaptureSession.CaptureCallback captureListener = new CameraCaptureSession.CaptureCallback()
+            {
                 @Override
-                public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
+                public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result)
+                {
                     super.onCaptureCompleted(session, request, result);
                     Toast.makeText(CameraActivity.this, "Saved:" + file, Toast.LENGTH_SHORT).show();
                     startCamera();
                 }
             };
-            cameraDevice.createCaptureSession(outputSurfaces, new CameraCaptureSession.StateCallback() {
+
+            cameraDevice.createCaptureSession(outputSurfaces, new CameraCaptureSession.StateCallback()
+            {
                 @Override
                 public void onConfigured(CameraCaptureSession session) {
                     try {
@@ -159,12 +188,15 @@ public class CameraActivity extends AppCompatActivity {
                 public void onConfigureFailed(CameraCaptureSession session) {
                 }
             }, mBackgroundHandler);
-        } catch (CameraAccessException e) {
+        }
+        catch (CameraAccessException e)
+        {
             e.printStackTrace();
         }
     }
 
-    private TextureView.SurfaceTextureListener surfaceTextureListener = new TextureView.SurfaceTextureListener() {
+    private TextureView.SurfaceTextureListener surfaceTextureListener = new TextureView.SurfaceTextureListener()
+    {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
             openCamera();
@@ -183,7 +215,6 @@ public class CameraActivity extends AppCompatActivity {
         public void onSurfaceTextureUpdated(SurfaceTexture surface) {
         }
     };
-
 
     private boolean checkCameraHardware(Context context) {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
@@ -208,29 +239,18 @@ public class CameraActivity extends AppCompatActivity {
 
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
             {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-
                 // https://developer.android.com/training/permissions/requesting.html
-                //checkes if the user have allowed the app to use the camera if not, ask them
+                //checks if the user have allowed the app to use the camera if not, ask them
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.CAMERA))
                 {
-
                     // Show an explanation to the user *asynchronously* -- don't block
                     // this thread waiting for the user's response! After the user
                     // sees the explanation, try again to request the permission.
-
                 }
                 else
                 {
                     // No explanation needed, we can request the permission.
-
                     ActivityCompat.requestPermissions(this,
                             new String[]{Manifest.permission.CAMERA},
                             MY_PERMISSIONS_REQUEST_CAMERA);
@@ -283,7 +303,7 @@ public class CameraActivity extends AppCompatActivity {
             return;
         }
         texture.setDefaultBufferSize(previewsize.getWidth(),previewsize.getHeight());
-        Surface surface=new Surface(texture);
+        Surface surface = new Surface(texture);
 
         try
         {
