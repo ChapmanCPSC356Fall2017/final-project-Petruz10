@@ -12,10 +12,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.petruz.cameraapp.Activities.AddTextActivity;
 import com.example.petruz.cameraapp.Fragments.StartupFragment;
 import com.example.petruz.cameraapp.R;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Created by Petruz on 11/12/17.
@@ -23,6 +27,7 @@ import java.io.File;
 
 public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.ImageViewHolder>
 {
+    private static final String LOGTAG = "IMAGE_LIST_ADAPTER";
 
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
@@ -61,11 +66,40 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Imag
 
         public void setup(int pos)
         {
+            String currentText = "";
             File image = StartupFragment.IMAGE_FILE.listFiles()[pos];
             Bitmap myBitmap = BitmapFactory.decodeFile(String.valueOf(image));
 
+            File textFile = StartupFragment.TEXT_FILE.listFiles()[pos];
+           // Log.d(LOGTAG, textFile.toString());
+            StringBuilder text = new StringBuilder();
+
+            try
+            {
+                String line;
+                BufferedReader br = new BufferedReader(new FileReader(textFile));
+
+                while ((line = br.readLine()) != null)
+                {
+                    text.append(line);
+                    text.append('\n');
+                    currentText += line;
+                }
+
+                tv.setText(currentText);
+                br.close();
+
+
+                //Log.d(LOGTAG, line);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+
             IVImage.setImageBitmap(myBitmap);
-            tv.setText("text test");
+
         }
     }
 }

@@ -3,6 +3,7 @@ package com.example.petruz.cameraapp.Fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -31,7 +32,7 @@ import java.util.Date;
 
 public class StartupFragment extends Fragment
 {
-    private static String LOGTAG = "STARTUP_CAMERA";
+    private static final String LOGTAG = "STARTUP_CAMERA";
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private String mCurrentPhotoPath;
@@ -40,6 +41,9 @@ public class StartupFragment extends Fragment
 
     public static int IMAGES_LENGTH;
     public static File IMAGE_FILE;
+
+    public static int TEXTS_LENGTH;
+    public static File TEXT_FILE;
 
     /*
      * TODO:
@@ -54,13 +58,33 @@ public class StartupFragment extends Fragment
     {
         super.onCreate(savedInstanceState);
 
+        AddTextActivity a = new AddTextActivity();
+
         setFiles();
+
     }
 
     private void setFiles()
     {
         IMAGE_FILE = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         IMAGES_LENGTH = IMAGE_FILE.listFiles().length;
+
+        TEXT_FILE = getContext().getFilesDir();
+        TEXTS_LENGTH = StartupFragment.TEXT_FILE.listFiles().length;
+
+       /* for (File f: IMAGE_FILE.listFiles())
+        {
+            f.delete();
+        }*/
+
+       /* for (File ff: TEXT_FILE.listFiles())
+        {
+            ff.delete();
+        }*/
+
+
+        Log.d(LOGTAG, "img length "+IMAGES_LENGTH);
+        Log.d(LOGTAG, "text length "+TEXTS_LENGTH);
     }
 
     @Nullable
@@ -122,7 +146,8 @@ public class StartupFragment extends Fragment
                 storageDir             /* directory */
         );
 
-        mCurrentPhotoPath = image.getAbsolutePath();
+      //  mCurrentPhotoPath = image.getAbsolutePath();
+        Log.d(LOGTAG, storageDir.toString());
         return image;
     }
 
@@ -132,7 +157,7 @@ public class StartupFragment extends Fragment
         super.onActivityResult(requestCode, resultCode, data);
 
         Log.d(LOGTAG, "onActivityResult()");
-        setFiles();
+        //setFiles();
 
         Intent intent = new Intent(this.getActivity(), AddTextActivity.class);
         startActivity(intent);

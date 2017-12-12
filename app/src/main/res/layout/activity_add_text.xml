@@ -9,6 +9,15 @@
     android:padding="10dp"
     tools:context="com.example.petruz.cameraapp.Activities.AddTextActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add text"
+        android:textSize="25sp"
+        android:textAlignment="center"
+        android:layout_margin="10dp"
+        />
+
     <ImageView
         android:id="@+id/IVNewImage"
         android:layout_width="match_parent"
