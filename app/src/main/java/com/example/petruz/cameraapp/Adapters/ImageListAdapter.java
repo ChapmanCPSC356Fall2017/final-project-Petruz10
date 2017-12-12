@@ -7,7 +7,6 @@ import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -63,10 +62,10 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Imag
         public void setup(int pos)
         {
             File image = StartupFragment.IMAGE_FILE.listFiles()[pos];
-
-            tv.setText("text test");
             Bitmap myBitmap = BitmapFactory.decodeFile(String.valueOf(image));
+
             IVImage.setImageBitmap(myBitmap);
+            tv.setText("text test");
         }
     }
 }

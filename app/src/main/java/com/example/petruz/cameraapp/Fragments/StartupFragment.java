@@ -15,7 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.petruz.cameraapp.Activities.AddTextActivity;
 import com.example.petruz.cameraapp.Adapters.ImageListAdapter;
+import com.example.petruz.cameraapp.MainActivity;
 import com.example.petruz.cameraapp.R;
 
 import java.io.File;
@@ -41,11 +43,9 @@ public class StartupFragment extends Fragment
 
     /*
      * TODO:
-     * set image
-     * how to load a file to a image view
-     * picasso print square
-     * skapa en recycler view där bilderna visas i detta fragment
      * on activity result, öppna en ny activity där man kan lägga till text osv osv
+     * visa den nya bilden direkt
+     * koppla bild och text
      */
 
 
@@ -54,9 +54,13 @@ public class StartupFragment extends Fragment
     {
         super.onCreate(savedInstanceState);
 
+        setFiles();
+    }
+
+    private void setFiles()
+    {
         IMAGE_FILE = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         IMAGES_LENGTH = IMAGE_FILE.listFiles().length;
-
     }
 
     @Nullable
@@ -122,4 +126,15 @@ public class StartupFragment extends Fragment
         return image;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d(LOGTAG, "onActivityResult()");
+        setFiles();
+
+        Intent intent = new Intent(this.getActivity(), AddTextActivity.class);
+        startActivity(intent);
+    }
 }
