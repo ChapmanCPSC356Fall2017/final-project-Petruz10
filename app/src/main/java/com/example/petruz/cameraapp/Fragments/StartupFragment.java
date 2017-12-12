@@ -18,6 +18,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Size;
 import android.view.LayoutInflater;
@@ -27,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.petruz.cameraapp.Activities.CameraActivity;
+import com.example.petruz.cameraapp.Adapters.ImageListAdapter;
 import com.example.petruz.cameraapp.MainActivity;
 import com.example.petruz.cameraapp.R;
 
@@ -48,9 +51,16 @@ public class StartupFragment extends Fragment
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private String mCurrentPhotoPath;
 
- //   private TextureView textureView;
+    private ImageListAdapter adapter;
+
+    public static int IMAGES_LENGTH;
+    public static File IMAGE_FILE;
+
     /*
      * TODO:
+     * set image
+     * how to load a file to a image view
+     * picasso print square
      * skapa en recycler view där bilderna visas i detta fragment
      * on activity result, öppna en ny activity där man kan lägga till text osv osv
      */
@@ -61,11 +71,9 @@ public class StartupFragment extends Fragment
     {
         super.onCreate(savedInstanceState);
 
-        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        for (File f : storageDir.listFiles())
-        {
-            Log.i(LOGTAG, f.getName());
-        }
+        IMAGE_FILE = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        IMAGES_LENGTH = IMAGE_FILE.listFiles().length;
+
     }
 
     @Nullable
@@ -73,6 +81,13 @@ public class StartupFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
         View v = inflater.inflate(R.layout.fragment_startup, container, false);
+
+        RecyclerView imageListView = v.findViewById(R.id.rvImages);
+
+        this.adapter = new ImageListAdapter();
+        imageListView.setAdapter(adapter);
+
+        imageListView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return v;
     }
@@ -88,15 +103,16 @@ public class StartupFragment extends Fragment
 
         if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null)
         {
-            // Create the File where the photo should go
             File photoFile = null;
             try
             {
                 photoFile = createImageFile();
-            } catch (IOException ex) {
+            }
+            catch (IOException ex)
+            {
                 Log.e(LOGTAG, "there was an error" + ex.getMessage());
             }
-            // Continue only if the File was successfully created
+
             if (photoFile != null)
             {
                 Uri photoUri = FileProvider.getUriForFile(this.getContext(), "com.example.petruz.cameraapp.fileprovider", photoFile);
