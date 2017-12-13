@@ -48,7 +48,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Imag
     @Override
     public int getItemCount()
     {
-        return StartupFragment.IMAGES_LENGTH;
+        return StartupFragment.TEXTS_LENGTH;
     }
 
     class ImageViewHolder extends RecyclerView.ViewHolder
@@ -71,7 +71,6 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Imag
             Bitmap myBitmap = BitmapFactory.decodeFile(String.valueOf(image));
 
             File textFile = StartupFragment.TEXT_FILE.listFiles()[pos];
-           // Log.d(LOGTAG, textFile.toString());
             StringBuilder text = new StringBuilder();
 
             try
@@ -89,8 +88,6 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Imag
                 tv.setText(currentText);
                 br.close();
 
-
-                //Log.d(LOGTAG, line);
             }
             catch (IOException e)
             {

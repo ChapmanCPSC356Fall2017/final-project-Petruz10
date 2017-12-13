@@ -47,8 +47,7 @@ public class StartupFragment extends Fragment
 
     /*
      * TODO:
-     * on activity result, öppna en ny activity där man kan lägga till text osv osv
-     * visa den nya bilden direkt
+     * se till att det alltid finns lika många textfiler som img filer alternativt att Adaptern inte körs om de är olika
      * koppla bild och text
      */
 
@@ -72,12 +71,12 @@ public class StartupFragment extends Fragment
         TEXT_FILE = getContext().getFilesDir();
         TEXTS_LENGTH = StartupFragment.TEXT_FILE.listFiles().length;
 
-       /* for (File f: IMAGE_FILE.listFiles())
+      /*  for (File f: IMAGE_FILE.listFiles())
         {
             f.delete();
-        }*/
+        }
 
-       /* for (File ff: TEXT_FILE.listFiles())
+        for (File ff: TEXT_FILE.listFiles())
         {
             ff.delete();
         }*/
@@ -157,9 +156,10 @@ public class StartupFragment extends Fragment
         super.onActivityResult(requestCode, resultCode, data);
 
         Log.d(LOGTAG, "onActivityResult()");
-        //setFiles();
 
         Intent intent = new Intent(this.getActivity(), AddTextActivity.class);
         startActivity(intent);
+
+        setFiles();
     }
 }

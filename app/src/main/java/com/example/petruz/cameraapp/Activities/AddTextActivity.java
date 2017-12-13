@@ -81,44 +81,9 @@ public class AddTextActivity extends AppCompatActivity
 
     public void finishActivity(View view) throws IOException
     {
-
         Log.d(LOGTAG, imageText);
-
         createTextFile();
-       // Uri textUri = FileProvider.getUriForFile(this.getApplicationContext(), "com.example.petruz.cameraapp.fileprovider", textFile);
-
-       // saveTextIntent.putExtra(MediaStore.EXTRA_OUTPUT, textUri);
-
-       // setFile();
         finish();
-    }
-
-    public void setFile()
-    {
-      /*  StartupFragment.TEXT_FILE = getApplicationContext().getFilesDir();
-        StartupFragment.TEXTS_LENGTH = StartupFragment.TEXT_FILE.listFiles().length;*/
-
-
-         /*   StringBuilder text = new StringBuilder();
-            try {
-
-
-                BufferedReader br = new BufferedReader(new FileReader(StartupFragment.TEXT_FILE.listFiles()[1]));
-                String line;
-                while ((line = br.readLine()) != null) {
-                    text.append(line);
-                    text.append('\n');
-                    Log.d(LOGTAG, line);
-                }
-                br.close() ;
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }*/
-
-            //Log.d(LOGTAG, line);
-
     }
 
     private File createTextFile() throws IOException
