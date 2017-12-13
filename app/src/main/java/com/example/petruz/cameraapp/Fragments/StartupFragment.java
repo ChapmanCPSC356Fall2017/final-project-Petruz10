@@ -65,7 +65,7 @@ public class StartupFragment extends Fragment
         TEXT_FILE = getContext().getFilesDir();
         TEXTS_LENGTH = StartupFragment.TEXT_FILE.listFiles().length;
 
-       /* for (File f: IMAGE_FILE.listFiles())
+       /*for (File f: IMAGE_FILE.listFiles())
         {
             f.delete();
         }
@@ -146,7 +146,7 @@ public class StartupFragment extends Fragment
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        
+
         Intent intent = new Intent(this.getActivity(), AddTextActivity.class);
         startActivity(intent);
 

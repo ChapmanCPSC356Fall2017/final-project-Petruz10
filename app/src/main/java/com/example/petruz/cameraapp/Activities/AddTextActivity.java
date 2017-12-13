@@ -31,11 +31,15 @@ import java.util.concurrent.atomic.LongAccumulator;
 
 public class AddTextActivity extends AppCompatActivity
 {
+    /*
+     * TODO:
+     * fix a scrollview or that you cant change orientation or something similiar so the finish button doesn't dissapear
+     */
     private static final String LOGTAG = "ADD_TEXT_ACTIVTY";
 
     private ImageView IV;
     private EditText ETaddText;
-    private String imageText;
+    private String imageText = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
