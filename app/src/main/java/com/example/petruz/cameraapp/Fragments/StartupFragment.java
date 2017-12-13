@@ -33,9 +33,7 @@ import java.util.Date;
 public class StartupFragment extends Fragment
 {
     private static final String LOGTAG = "STARTUP_CAMERA";
-
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private String mCurrentPhotoPath;
 
     private ImageListAdapter adapter;
 
@@ -45,25 +43,21 @@ public class StartupFragment extends Fragment
     public static int TEXTS_LENGTH;
     public static File TEXT_FILE;
 
-    /*
-     * TODO:
-     * se till att det alltid finns lika många textfiler som img filer alternativt att Adaptern inte körs om de är olika
-     * koppla bild och text
-     */
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        AddTextActivity a = new AddTextActivity();
-
-        setFiles();
-
     }
 
-    private void setFiles()
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        setFiles();
+    }
+
+    public void setFiles()
     {
         IMAGE_FILE = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         IMAGES_LENGTH = IMAGE_FILE.listFiles().length;
@@ -71,7 +65,7 @@ public class StartupFragment extends Fragment
         TEXT_FILE = getContext().getFilesDir();
         TEXTS_LENGTH = StartupFragment.TEXT_FILE.listFiles().length;
 
-      /*  for (File f: IMAGE_FILE.listFiles())
+       /* for (File f: IMAGE_FILE.listFiles())
         {
             f.delete();
         }
@@ -145,8 +139,6 @@ public class StartupFragment extends Fragment
                 storageDir             /* directory */
         );
 
-      //  mCurrentPhotoPath = image.getAbsolutePath();
-        Log.d(LOGTAG, storageDir.toString());
         return image;
     }
 
@@ -154,12 +146,9 @@ public class StartupFragment extends Fragment
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-
-        Log.d(LOGTAG, "onActivityResult()");
-
+        
         Intent intent = new Intent(this.getActivity(), AddTextActivity.class);
         startActivity(intent);
 
-        setFiles();
     }
 }

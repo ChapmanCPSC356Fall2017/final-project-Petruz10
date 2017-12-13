@@ -37,9 +37,6 @@ public class AddTextActivity extends AppCompatActivity
     private EditText ETaddText;
     private String imageText;
 
-    //public static File TEXT_FILE;
-    //public static int TEXTS_LENGTH;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -83,6 +80,7 @@ public class AddTextActivity extends AppCompatActivity
     {
         Log.d(LOGTAG, imageText);
         createTextFile();
+
         finish();
     }
 
@@ -105,8 +103,6 @@ public class AddTextActivity extends AppCompatActivity
         {
             e.printStackTrace();
         }
-
-        Log.d(LOGTAG, storageDir.toString());
 
         return file;
     }
