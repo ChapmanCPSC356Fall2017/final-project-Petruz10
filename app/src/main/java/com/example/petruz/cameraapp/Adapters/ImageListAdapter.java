@@ -2,17 +2,13 @@ package com.example.petruz.cameraapp.Adapters;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Debug;
-import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.petruz.cameraapp.Activities.AddTextActivity;
 import com.example.petruz.cameraapp.Fragments.StartupFragment;
 import com.example.petruz.cameraapp.R;
 

@@ -31,10 +31,6 @@ import java.util.concurrent.atomic.LongAccumulator;
 
 public class AddTextActivity extends AppCompatActivity
 {
-    /*
-     * TODO:
-     * fix a scrollview or that you cant change orientation or something similiar so the finish button doesn't dissapear
-     */
     private static final String LOGTAG = "ADD_TEXT_ACTIVTY";
 
     private ImageView IV;
@@ -82,13 +78,28 @@ public class AddTextActivity extends AppCompatActivity
 
     public void finishActivity(View view) throws IOException
     {
-        Log.d(LOGTAG, imageText);
-        createTextFile();
-
         finish();
     }
 
-    private File createTextFile() throws IOException
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        createTextFile();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+    }
+
+
+    /*
+     * I commented out the 'throws IOException as I couldn't call the method from onPause otherwise
+     * However it didn't seem to make any difference.
+     */
+    private File createTextFile()// throws IOException
     {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "TEXT_" + timeStamp;

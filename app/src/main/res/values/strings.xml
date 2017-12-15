@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Camera App</string>
+    <string name="add_text">Add text</string>
+    <string name="the_image_you_just_took">the image you just took</string>
+    <string name="add_some_text_to_your_image">Add some text to your image</string>
+    <string name="finish">Finish</string>
 </resources>

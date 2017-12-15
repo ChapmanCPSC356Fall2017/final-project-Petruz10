@@ -3,7 +3,6 @@ package com.example.petruz.cameraapp.Fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -18,7 +17,6 @@ import android.view.ViewGroup;
 
 import com.example.petruz.cameraapp.Activities.AddTextActivity;
 import com.example.petruz.cameraapp.Adapters.ImageListAdapter;
-import com.example.petruz.cameraapp.MainActivity;
 import com.example.petruz.cameraapp.R;
 
 import java.io.File;
@@ -48,6 +46,7 @@ public class StartupFragment extends Fragment
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setFiles();
     }
 
     @Override
@@ -64,17 +63,6 @@ public class StartupFragment extends Fragment
 
         TEXT_FILE = getContext().getFilesDir();
         TEXTS_LENGTH = StartupFragment.TEXT_FILE.listFiles().length;
-
-       /*for (File f: IMAGE_FILE.listFiles())
-        {
-            f.delete();
-        }
-
-        for (File ff: TEXT_FILE.listFiles())
-        {
-            ff.delete();
-        }*/
-
 
         Log.d(LOGTAG, "img length "+IMAGES_LENGTH);
         Log.d(LOGTAG, "text length "+TEXTS_LENGTH);
@@ -119,10 +107,12 @@ public class StartupFragment extends Fragment
 
             if (photoFile != null)
             {
+                Log.d(LOGTAG, "if takePicture()");
                 Uri photoUri = FileProvider.getUriForFile(this.getContext(), "com.example.petruz.cameraapp.fileprovider", photoFile);
 
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+
             }
         }
     }
@@ -146,9 +136,19 @@ public class StartupFragment extends Fragment
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
+        setFiles();
+
+        File r = IMAGE_FILE.listFiles()[IMAGES_LENGTH-1];
+        /* as the image file always creates even though the user push the back btn
+         * If the user didn't take a image, delete the empty file and return
+         */
+        if(resultCode == 0)
+        {
+            r.delete();
+            return;
+        }
 
         Intent intent = new Intent(this.getActivity(), AddTextActivity.class);
         startActivity(intent);
-
     }
 }
