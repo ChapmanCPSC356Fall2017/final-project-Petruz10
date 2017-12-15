@@ -63,9 +63,6 @@ public class StartupFragment extends Fragment
 
         TEXT_FILE = getContext().getFilesDir();
         TEXTS_LENGTH = StartupFragment.TEXT_FILE.listFiles().length;
-
-        Log.d(LOGTAG, "img length "+IMAGES_LENGTH);
-        Log.d(LOGTAG, "text length "+TEXTS_LENGTH);
     }
 
     @Nullable
@@ -107,12 +104,10 @@ public class StartupFragment extends Fragment
 
             if (photoFile != null)
             {
-                Log.d(LOGTAG, "if takePicture()");
                 Uri photoUri = FileProvider.getUriForFile(this.getContext(), "com.example.petruz.cameraapp.fileprovider", photoFile);
 
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-
             }
         }
     }
@@ -139,6 +134,7 @@ public class StartupFragment extends Fragment
         setFiles();
 
         File r = IMAGE_FILE.listFiles()[IMAGES_LENGTH-1];
+
         /* as the image file always creates even though the user push the back btn
          * If the user didn't take a image, delete the empty file and return
          */
@@ -148,6 +144,11 @@ public class StartupFragment extends Fragment
             return;
         }
 
+        addText();
+    }
+
+    private void addText()
+    {
         Intent intent = new Intent(this.getActivity(), AddTextActivity.class);
         startActivity(intent);
     }

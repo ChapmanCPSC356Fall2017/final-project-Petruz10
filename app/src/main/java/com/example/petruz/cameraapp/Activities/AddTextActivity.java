@@ -106,7 +106,7 @@ public class AddTextActivity extends AppCompatActivity
 
         File storageDir = getApplicationContext().getFilesDir();
 
-        File file = new File(getApplicationContext().getFilesDir(), imageFileName+".txt");
+        File file = new File(storageDir, imageFileName+".txt");
         FileOutputStream outputStream;
 
         try {
